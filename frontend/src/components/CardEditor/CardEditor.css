@@ -40,13 +40,158 @@
   gap: 0.5rem;
 }
 
-.save-status {
-  font-size: 0.75rem;
-  color: #22c55e;
-  font-weight: 500;
+/* Save Indicator */
+.save-indicator {
+  min-width: 80px;
+  text-align: right;
 }
 
+.save-status {
+  font-size: 0.75rem;
+  font-weight: 500;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.25rem;
+}
+
+.save-status.saving {
+  color: #3b82f6;
+}
+
+.save-status.saved {
+  color: #22c55e;
+}
+
+.save-status.error {
+  color: #ef4444;
+}
+
+/* Editor Content */
 .editor-content {
   flex: 1;
   overflow: auto;
+  padding: 1rem;
+  background: white;
+}
+
+/* Empty State */
+.editor-empty-state {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  height: 100%;
+  color: #64748b;
+  text-align: center;
+}
+
+.editor-empty-state p {
+  margin: 0 0 0.5rem 0;
+  font-size: 0.875rem;
+}
+
+/* Milkdown Styles */
+.milkdown {
+  width: 100%;
+  min-height: 400px;
+  outline: none;
+}
+
+.milkdown .editor {
+  outline: none;
+  font-size: 1rem;
+  line-height: 1.75;
+  color: #1e293b;
+}
+
+.milkdown h1 {
+  font-size: 2rem;
+  font-weight: 700;
+  margin: 1.5rem 0 1rem;
+  color: #0f172a;
+}
+
+.milkdown h2 {
+  font-size: 1.5rem;
+  font-weight: 600;
+  margin: 1.25rem 0 0.75rem;
+  color: #0f172a;
+}
+
+.milkdown h3 {
+  font-size: 1.25rem;
+  font-weight: 600;
+  margin: 1rem 0 0.5rem;
+  color: #0f172a;
+}
+
+.milkdown p {
+  margin: 0.75rem 0;
+}
+
+.milkdown ul,
+.milkdown ol {
+  margin: 0.75rem 0;
+  padding-left: 2rem;
+}
+
+.milkdown li {
+  margin: 0.25rem 0;
+}
+
+.milkdown code {
+  background-color: #f1f5f9;
+  padding: 0.125rem 0.25rem;
+  border-radius: 3px;
+  font-family: 'Monaco', 'Courier New', monospace;
+  font-size: 0.875em;
+  color: #dc2626;
+}
+
+.milkdown pre {
+  background-color: #1e293b;
+  color: #e2e8f0;
+  padding: 1rem;
+  border-radius: 6px;
+  overflow-x: auto;
+  margin: 1rem 0;
+}
+
+.milkdown pre code {
+  background-color: transparent;
+  color: inherit;
+  padding: 0;
+  font-size: 0.875rem;
+}
+
+.milkdown blockquote {
+  border-left: 4px solid #cbd5e1;
+  padding-left: 1rem;
+  margin: 1rem 0;
+  color: #64748b;
+  font-style: italic;
+}
+
+.milkdown a {
+  color: #3b82f6;
+  text-decoration: underline;
+}
+
+.milkdown a:hover {
+  color: #2563eb;
+}
+
+.milkdown hr {
+  border: none;
+  border-top: 1px solid #e2e8f0;
+  margin: 2rem 0;
+}
+
+.milkdown strong {
+  font-weight: 600;
+  color: #0f172a;
+}
+
+.milkdown em {
+  font-style: italic;
 }
