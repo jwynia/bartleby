@@ -15,7 +15,11 @@ This document serves as an index of all key decisions made for the project, prov
 
 | ID | Title | Status | Date | Domain | Summary |
 |----|-------|--------|------|--------|---------|
-| [Template] | [Decision Title] | [Status] | [Date] | [Domain] | [Brief summary of the decision] |
+| [001](001-event-sourcing-architecture.md) | Event Sourcing Architecture | Accepted | 2025-11-14 | Architecture | Use event sourcing with materialized views for complete audit trail and undo capability |
+| [002](002-bidirectional-links.md) | Bidirectional Link Storage | Accepted | 2025-11-14 | Data Model | Store all links as bidirectional relationships regardless of creation method |
+| [003](003-technology-stack.md) | Technology Stack Selection | Accepted | 2025-11-14 | Technology | Core stack: Node.js, Hono, SQLite, React, Vite, TanStack, Milkdown |
+| [004](004-docker-per-book-deployment.md) | Docker Container Per Book | Accepted | 2025-11-14 | Deployment | Deploy each book as a separate self-contained Docker container |
+| [005](005-visx-for-visualization.md) | Use visx for Visualization | Accepted | 2025-11-14 | Technology | Use visx instead of D3.js directly for better React integration in network visualization |
 
 ### Decision Status Legend
 
@@ -27,39 +31,16 @@ This document serves as an index of all key decisions made for the project, prov
 ### Decision Categories
 
 #### By Domain
-<!-- Categories should be customized based on project type -->
-
-<!-- For Software Projects -->
-- **Frontend**: [List of decision IDs related to frontend]
-- **Backend**: [List of decision IDs related to backend]
-- **DevOps**: [List of decision IDs related to DevOps]
-- **Data**: [List of decision IDs related to data]
-- **Security**: [List of decision IDs related to security]
-- **Architecture**: [List of decision IDs related to overall architecture]
-
-<!-- For Research Projects -->
-- **Methodology**: [List of decision IDs related to research methodology]
-- **Data Collection**: [List of decision IDs related to data collection]
-- **Analysis**: [List of decision IDs related to analysis approaches]
-- **Interpretation**: [List of decision IDs related to interpretation frameworks]
-
-<!-- For Creative Projects -->
-- **Narrative**: [List of decision IDs related to narrative structure]
-- **Characters**: [List of decision IDs related to character development]
-- **Setting**: [List of decision IDs related to setting design]
-- **Style**: [List of decision IDs related to stylistic choices]
-
-<!-- For Knowledge Base Projects -->
-- **Structure**: [List of decision IDs related to knowledge organization]
-- **Content**: [List of decision IDs related to content creation]
-- **Access**: [List of decision IDs related to access patterns]
-- **Integration**: [List of decision IDs related to external integrations]
+- **Architecture**: 001
+- **Data Model**: 002
+- **Technology**: 003, 005
+- **Deployment**: 004
 
 #### By Status
-- **Proposed**: [List of decision IDs with proposed status]
-- **Accepted**: [List of decision IDs with accepted status]
-- **Deprecated**: [List of decision IDs with deprecated status]
-- **Superseded**: [List of decision IDs with superseded status]
+- **Proposed**: None
+- **Accepted**: 001, 002, 003, 004, 005
+- **Deprecated**: None
+- **Superseded**: None
 
 ### Decision Relationships
 
@@ -79,9 +60,10 @@ This document serves as an index of all key decisions made for the project, prov
 - **Update Patterns:** This index should be updated whenever a new decision is added or a decision status changes
 
 ## Metadata
-- **Created:** [Date]
-- **Last Updated:** [Date]
-- **Updated By:** [Role/Agent]
+- **Created:** 2025-11-14
+- **Last Updated:** 2025-11-14
+- **Updated By:** AI Agent (Claude)
 
 ## Change History
-- [Date]: Initial creation of decision index
+- 2025-11-14: Initial creation of decision index
+- 2025-11-14: Added decisions 001-005

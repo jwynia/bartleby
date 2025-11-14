@@ -43,10 +43,13 @@ gantt
 
 ### Current Phase
 
-**Phase: Phase 1 - Core Backend**
+**Phase: Phase 2 - Core Frontend**
 **Status: In Progress**
 
-Building the foundational data layer and API. This includes the event-sourced SQLite database, materialized views, REST API endpoints, and wiki link parsing system. Once complete, all card and link operations will be functional via API calls.
+Building the essential user interface for the writing workflow. This includes the tree view with drag-and-drop, Milkdown markdown editor integration, link panel, and basic wiki link autocomplete.
+
+**Previous Phase (Phase 1 - Core Backend): Completed**
+The foundational data layer and API have been implemented, including event-sourced SQLite database, materialized views, REST API endpoints, and wiki link parsing system. All card and link operations are functional via API calls.
 
 ### Upcoming Milestones
 
@@ -101,11 +104,12 @@ Building the foundational data layer and API. This includes the event-sourced SQ
 - **Timeline:** Jan 2 - Jan 23
 - **Theme:** Visualization and export capabilities
 - **Features:**
-  - Network visualization (D3.js) - Priority: High
+  - Network visualization (visx) - Priority: High
   - Manuscript reading view - Priority: High
   - Config management UI - Priority: Medium
   - Ghost link resolution - Priority: Medium
   - Full export with Pandoc support - Priority: High
+- **Note:** Using visx instead of D3.js directly for better React integration (see decision 005)
 
 #### Phase 4: Polish (1-2 weeks)
 - **Timeline:** Jan 23 - Feb 6
@@ -152,7 +156,7 @@ Building the foundational data layer and API. This includes the event-sourced SQ
 | Event sourcing complexity | High | Medium | Start simple, use clear examples, test replay early |
 | Wiki link resolution ambiguity | Medium | High | Provide disambiguation UI, support type prefixes |
 | Markdown editor integration issues | High | Medium | Choose battle-tested library (Milkdown), plan for alternatives |
-| Network visualization performance | Medium | Low | Limit graph depth to 5, use webworkers for layout |
+| Network visualization performance | Medium | Low | Limit graph depth to 5, use visx with React-optimized rendering |
 | Docker build complexity | Medium | Low | Follow standard Node.js patterns, multi-stage builds |
 | Export format incompatibility | Medium | Low | Follow Pandoc conventions strictly, include sample exports |
 
@@ -190,3 +194,5 @@ Building the foundational data layer and API. This includes the event-sourced SQ
 ## Change History
 - 2025-11-14: Initial creation of roadmap template
 - 2025-11-14: Populated with Bartleby 5-phase development roadmap
+- 2025-11-14: Updated current phase to Phase 2, marked Phase 1 as completed
+- 2025-11-14: Changed Phase 3 visualization from D3.js to visx (per decision 005)

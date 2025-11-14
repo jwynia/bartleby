@@ -17,7 +17,7 @@ This element defines the React-based single-page application that provides the u
 **Server State:** TanStack Query (caching, optimistic updates)
 **UI State:** Zustand (lightweight global state)
 **Markdown Editor:** Milkdown (WYSIWYG with plugin support)
-**Visualization:** D3.js (force-directed graphs)
+**Visualization:** visx (React-first D3.js wrapper for network graphs)
 **Styling:** CSS Modules or Tailwind (TBD based on preferences)
 
 ## Core Views
@@ -172,7 +172,7 @@ All mutations optimistically update UI:
 3. **Milkdown**: Extensible, supports custom plugins for wiki links
 4. **Optimistic updates**: Perceived performance critical for writing flow
 5. **Resizable panels**: Authors customize workspace
-6. **D3.js**: Powerful, flexible visualization library
+6. **visx**: React-first visualization with D3.js calculations (see decision 005)
 
 ## Responsibilities
 
