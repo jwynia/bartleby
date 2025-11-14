@@ -9,8 +9,10 @@ import { useAutosave } from '../../hooks/useAutosave';
 import { SaveIndicator, type SaveStatus } from './SaveIndicator';
 import { CardHeader } from './CardHeader';
 import { LoadingSkeleton } from '../LoadingSkeleton/LoadingSkeleton';
+import { WikiLinkModal } from './WikiLinkModal';
 import './CardEditor.css';
 import './CardHeader.css';
+import './WikiLinkModal.css';
 
 function EditorComponent() {
   const { selectedId } = useTreeStore();
@@ -20,6 +22,7 @@ function EditorComponent() {
   const [title, setTitle] = useState('');
   const [content, setContent] = useState('');
   const [saveStatus, setSaveStatus] = useState<SaveStatus>('idle');
+  const [showWikiLinkModal, setShowWikiLinkModal] = useState(false);
 
   // Update local state when card changes
   useEffect(() => {
@@ -79,6 +82,21 @@ function EditorComponent() {
     enabled: !!selectedId && !!card,
   });
 
+  // Insert wiki link into editor
+  const insertWikiLink = useCallback((linkTitle: string, targetCardId: string) => {
+    // Insert markdown link at cursor position
+    const linkText = `[${linkTitle}](/cards/${targetCardId})`;
+
+    // Append to content for now (cursor position tracking would require ProseMirror integration)
+    setContent((prev) => {
+      const trimmed = prev.trim();
+      if (trimmed) {
+        return `${trimmed}\n\n${linkText}`;
+      }
+      return linkText;
+    });
+  }, []);
+
   // Create Milkdown editor
   const { get } = useEditor((root) =>
     Editor.make()
@@ -106,6 +124,19 @@ function EditorComponent() {
     // For now, we'll let the editor update through defaultValueCtx
     // More sophisticated sync can be added later if needed
   }, [content, get]);
+
+  // Keyboard shortcut for wiki link modal (Cmd+K)
+  useEffect(() => {
+    const handleKeyDown = (e: KeyboardEvent) => {
+      if ((e.metaKey || e.ctrlKey) && e.key === 'k' && selectedId) {
+        e.preventDefault();
+        setShowWikiLinkModal(true);
+      }
+    };
+
+    window.addEventListener('keydown', handleKeyDown);
+    return () => window.removeEventListener('keydown', handleKeyDown);
+  }, [selectedId]);
 
   if (!selectedId) {
     return (
@@ -148,12 +179,27 @@ function EditorComponent() {
           onChange={(e) => setTitle(e.target.value)}
         />
         <div className="editor-actions">
+          <button
+            className="wiki-link-btn"
+            onClick={() => setShowWikiLinkModal(true)}
+            title="Insert Link (Cmd+K)"
+          >
+            🔗
+          </button>
           <SaveIndicator status={saveStatus} />
         </div>
       </div>
       <div className="editor-content">
         <Milkdown />
       </div>
+
+      {showWikiLinkModal && selectedId && (
+        <WikiLinkModal
+          sourceCardId={selectedId}
+          onInsert={insertWikiLink}
+          onClose={() => setShowWikiLinkModal(false)}
+        />
+      )}
     </div>
   );
 }
