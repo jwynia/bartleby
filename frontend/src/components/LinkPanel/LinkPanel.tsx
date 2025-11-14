@@ -1,9 +1,11 @@
+import { useNavigate } from '@tanstack/react-router';
 import { useTreeStore } from '../../stores/treeStore';
 import { useCards } from '../../hooks/useCards';
 import { useLinks } from '../../hooks/useLinks';
 import './LinkPanel.css';
 
 export function LinkPanel() {
+  const navigate = useNavigate();
   const { selectedId, setSelected } = useTreeStore();
   const { data: cards } = useCards();
   const { data: links, isLoading } = useLinks(selectedId || undefined);
@@ -20,6 +22,7 @@ export function LinkPanel() {
 
   const handleLinkClick = (cardId: string) => {
     setSelected(cardId);
+    navigate({ to: '/cards/$cardId', params: { cardId } });
   };
 
   if (!selectedId) {

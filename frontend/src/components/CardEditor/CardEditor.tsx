@@ -7,7 +7,9 @@ import { useTreeStore } from '../../stores/treeStore';
 import { useCard, useUpdateCard } from '../../hooks/useCards';
 import { useAutosave } from '../../hooks/useAutosave';
 import { SaveIndicator, type SaveStatus } from './SaveIndicator';
+import { CardHeader } from './CardHeader';
 import './CardEditor.css';
+import './CardHeader.css';
 
 function EditorComponent() {
   const { selectedId } = useTreeStore();
@@ -137,6 +139,7 @@ function EditorComponent() {
 
   return (
     <div className="card-editor">
+      <CardHeader card={card} />
       <div className="editor-header">
         <input
           type="text"

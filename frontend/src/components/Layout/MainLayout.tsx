@@ -1,6 +1,7 @@
 import { ReactNode, useEffect } from 'react';
 import { Panel, PanelGroup, PanelResizeHandle } from 'react-resizable-panels';
 import { useLayoutStore } from '../../stores/layoutStore';
+import { useCardNavigation } from '../../hooks/useCardNavigation';
 import './MainLayout.css';
 
 interface MainLayoutProps {
@@ -21,7 +22,10 @@ export function MainLayout({ treePanel, editorPanel, linksPanel }: MainLayoutPro
     setLinksWidth,
   } = useLayoutStore();
 
-  // Keyboard shortcuts
+  // Enable keyboard navigation for prev/next cards (Cmd+[ / Cmd+])
+  useCardNavigation();
+
+  // Keyboard shortcuts for layout
   useEffect(() => {
     const handleKeyDown = (e: KeyboardEvent) => {
       // Cmd/Ctrl + B: Toggle tree panel

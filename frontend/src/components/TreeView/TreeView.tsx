@@ -1,4 +1,5 @@
 import { useEffect, useMemo, useRef, useState } from 'react';
+import { useNavigate } from '@tanstack/react-router';
 import { Tree, NodeApi, MoveHandler } from 'react-arborist';
 import { useCards, useCreateCard, useMoveCard } from '../../hooks/useCards';
 import { useTreeStore } from '../../stores/treeStore';
@@ -10,6 +11,7 @@ import './TreeView.css';
 
 export function TreeView() {
   const treeRef = useRef<any>(null);
+  const navigate = useNavigate();
 
   const { data: cards, isLoading, error } = useCards();
   const createCard = useCreateCard();
@@ -32,10 +34,11 @@ export function TreeView() {
     const node = nodes[0];
     if (node) {
       setSelected(node.id);
-      // Navigate to card detail route (will implement in Task 7)
-      // navigate({ to: `/cards/${node.id}` });
+      // Navigate to card detail route
+      navigate({ to: '/cards/$cardId', params: { cardId: node.id } });
     } else {
       setSelected(null);
+      navigate({ to: '/' });
     }
   };
 
