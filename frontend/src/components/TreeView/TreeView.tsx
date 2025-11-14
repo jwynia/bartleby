@@ -1,6 +1,6 @@
 import { useEffect, useMemo, useRef, useState } from 'react';
-import { Tree, NodeApi } from 'react-arborist';
-import { useCards, useCreateCard, useDeleteCard } from '../../hooks/useCards';
+import { Tree, NodeApi, MoveHandler } from 'react-arborist';
+import { useCards, useCreateCard, useMoveCard } from '../../hooks/useCards';
 import { useTreeStore } from '../../stores/treeStore';
 import { buildTree } from '../../lib/treeUtils';
 import type { TreeNode } from '../../lib/treeUtils';
@@ -13,6 +13,7 @@ export function TreeView() {
 
   const { data: cards, isLoading, error } = useCards();
   const createCard = useCreateCard();
+  const moveCardMutation = useMoveCard();
 
   const { expandedIds, selectedId, setSelected } = useTreeStore();
 
@@ -55,6 +56,43 @@ export function TreeView() {
         setNewCardTitle('');
         setNewCardType('note');
       },
+    });
+  };
+
+  // Handle card move (drag-and-drop)
+  const handleMove: MoveHandler<TreeNode> = ({ dragIds, parentId, index }) => {
+    // Only handle single card moves for now
+    if (dragIds.length !== 1) return;
+
+    const cardId = dragIds[0];
+    const newParentId = parentId || null;
+    const newPosition = index;
+
+    // Prevent moving a card onto itself or its descendants
+    if (cards) {
+      const card = cards.find((c) => c.id === cardId);
+      if (!card) return;
+
+      // Check if trying to move onto a descendant
+      const isDescendant = (targetId: string | null, potentialAncestorId: string): boolean => {
+        if (!targetId) return false;
+        if (targetId === potentialAncestorId) return true;
+        const targetCard = cards.find((c) => c.id === targetId);
+        if (!targetCard || !targetCard.parentId) return false;
+        return isDescendant(targetCard.parentId, potentialAncestorId);
+      };
+
+      if (newParentId && isDescendant(newParentId, cardId)) {
+        console.warn('Cannot move a card to its own descendant');
+        return;
+      }
+    }
+
+    // Perform the move
+    moveCardMutation.mutate({
+      id: cardId,
+      parentId: newParentId,
+      position: newPosition,
     });
   };
 
@@ -181,6 +219,7 @@ export function TreeView() {
             rowHeight={36}
             overscanCount={10}
             onSelect={handleSelect}
+            onMove={handleMove}
             selection={selectedId || undefined}
             {...(expandedIds.size > 0 && {
               initialOpenState: Object.fromEntries(

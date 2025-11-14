@@ -4,9 +4,10 @@
   padding: 0.25rem 0.5rem;
   cursor: pointer;
   user-select: none;
-  transition: background-color 0.15s ease;
+  transition: background-color 0.15s ease, opacity 0.15s ease;
   border-radius: 4px;
   margin: 2px 0;
+  position: relative;
 }
 
 .tree-node:hover {
@@ -21,6 +22,31 @@
 
 .tree-node.editing {
   background-color: #fef3c7;
+}
+
+/* Drag and drop states */
+.tree-node[data-drop-target="true"] {
+  background-color: #dbeafe;
+  border: 2px dashed #3b82f6;
+  padding: calc(0.25rem - 2px) calc(0.5rem - 2px);
+}
+
+.tree-node[data-dragging="true"] {
+  opacity: 0.5;
+  cursor: grabbing;
+}
+
+.tree-node[data-dragging="true"] .tree-node-content {
+  opacity: 0.6;
+}
+
+/* Drag cursor */
+.tree-node {
+  cursor: grab;
+}
+
+.tree-node:active {
+  cursor: grabbing;
 }
 
 .tree-node-content {
