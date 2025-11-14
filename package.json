@@ -1,0 +1,30 @@
+{
+  "name": "bartleby",
+  "version": "1.0.0",
+  "description": "Writing tool for fiction and non-fiction with nested notecards and flexible linking",
+  "private": true,
+  "scripts": {
+    "install:all": "npm install && cd backend && npm install && cd ../frontend && npm install",
+    "dev:backend": "cd backend && npm run dev",
+    "dev:frontend": "cd frontend && npm run dev",
+    "dev": "npm run dev:backend & npm run dev:frontend",
+    "build:backend": "cd backend && npm run build",
+    "build:frontend": "cd frontend && npm run build",
+    "build": "npm run build:backend && npm run build:frontend",
+    "type-check": "cd backend && npm run type-check && cd ../frontend && npm run type-check"
+  },
+  "keywords": [
+    "writing",
+    "notecard",
+    "scrivener",
+    "markdown",
+    "linking",
+    "event-sourcing"
+  ],
+  "author": "",
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/jwynia/bartleby"
+  }
+}

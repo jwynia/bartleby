@@ -1,0 +1,48 @@
+# Dependencies
+node_modules/
+*/node_modules/
+
+# Build outputs
+dist/
+*/dist/
+build/
+
+# Environment
+.env
+.env.local
+.env.*.local
+
+# IDE
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+.DS_Store
+
+# Git
+.git/
+.gitignore
+
+# Database
+*.db
+*.db-shm
+*.db-wal
+data/
+exports/
+
+# Testing
+coverage/
+
+# Misc
+.cache/
+temp/
+tmp/
+*.log
+
+# Context network and documentation
+context-network/
+inbox/
+README.md
+CLAUDE.md
+.context-network.md

@@ -13,29 +13,40 @@ This document outlines the planned development path for the project, including k
 
 ### Roadmap Overview
 
-[Provide a high-level overview of the project roadmap, including major phases and goals]
+Bartleby development follows 5 phases, building from data layer to deployment. Each phase is fully functional before proceeding to the next.
+
+**Total Duration:** 9-13 weeks
+**Approach:** Iterative, layer-by-layer (Database → API → UI → Features → Deployment)
 
 ```mermaid
 gantt
-    title Project Roadmap
+    title Bartleby Development Roadmap
     dateFormat  YYYY-MM-DD
-    section Phase 1
-    [Milestone 1]      :a1, [Start Date], 30d
-    [Milestone 2]      :after a1, 45d
-    section Phase 2
-    [Milestone 3]      :[Date], 60d
-    [Milestone 4]      :[Date], 30d
-    section Phase 3
-    [Milestone 5]      :[Date], 45d
-    [Milestone 6]      :[Date], 30d
+    section Phase 1: Backend
+    Database Schema           :p1a, 2025-11-14, 5d
+    Event Sourcing           :p1b, after p1a, 5d
+    Card/Link APIs           :p1c, after p1b, 5d
+    section Phase 2: Frontend
+    React Scaffolding        :p2a, after p1c, 7d
+    Tree View                :p2b, after p2a, 7d
+    Card Editor              :p2c, after p2b, 7d
+    section Phase 3: Features
+    Network Visualization    :p3a, after p2c, 7d
+    Export System            :p3b, after p3a, 7d
+    Manuscript View          :p3c, after p3b, 7d
+    section Phase 4: Polish
+    Error Handling           :p4a, after p3c, 5d
+    Performance              :p4b, after p4a, 5d
+    section Phase 5: Deploy
+    Docker Setup             :p5a, after p4b, 7d
 ```
 
 ### Current Phase
 
-**Phase: [Current Phase Name]**
-**Status: [In Progress/Planning/Completed]**
+**Phase: Phase 1 - Core Backend**
+**Status: In Progress**
 
-[Description of the current phase, including goals, scope, and expected outcomes]
+Building the foundational data layer and API. This includes the event-sourced SQLite database, materialized views, REST API endpoints, and wiki link parsing system. Once complete, all card and link operations will be functional via API calls.
 
 ### Upcoming Milestones
 
@@ -65,49 +76,98 @@ gantt
 
 ### Feature Timeline
 
-#### Phase 1: [Phase 1 Name]
-- **Timeline:** [Start Date] - [End Date]
-- **Theme:** [Overall theme or focus of this phase]
+#### Phase 1: Core Backend (2-3 weeks)
+- **Timeline:** Nov 14 - Dec 5
+- **Theme:** Data persistence and API foundation
 - **Features:**
-  - [Feature 1]: [Description] - [Priority: High/Medium/Low]
-  - [Feature 2]: [Description] - [Priority: High/Medium/Low]
-  - [Feature 3]: [Description] - [Priority: High/Medium/Low]
+  - Database schema and migrations - Priority: High
+  - Event sourcing implementation - Priority: High
+  - Card CRUD API endpoints - Priority: High
+  - Link CRUD API endpoints - Priority: High
+  - Wiki link parser and resolver - Priority: High
+  - Basic export functionality - Priority: Medium
 
-#### Phase 2: [Phase 2 Name]
-- **Timeline:** [Start Date] - [End Date]
-- **Theme:** [Overall theme or focus of this phase]
+#### Phase 2: Core Frontend (3-4 weeks)
+- **Timeline:** Dec 5 - Jan 2
+- **Theme:** Essential UI for writing workflow
 - **Features:**
-  - [Feature 1]: [Description] - [Priority: High/Medium/Low]
-  - [Feature 2]: [Description] - [Priority: High/Medium/Low]
-  - [Feature 3]: [Description] - [Priority: High/Medium/Low]
+  - Project scaffolding (Vite + React + TanStack Router) - Priority: High
+  - Tree view with drag-and-drop - Priority: High
+  - Card editor with Milkdown integration - Priority: High
+  - Link panel component - Priority: High
+  - Basic wiki link autocomplete - Priority: Medium
 
-#### Phase 3: [Phase 3 Name]
-- **Timeline:** [Start Date] - [End Date]
-- **Theme:** [Overall theme or focus of this phase]
+#### Phase 3: Advanced Features (2-3 weeks)
+- **Timeline:** Jan 2 - Jan 23
+- **Theme:** Visualization and export capabilities
 - **Features:**
-  - [Feature 1]: [Description] - [Priority: High/Medium/Low]
-  - [Feature 2]: [Description] - [Priority: High/Medium/Low]
-  - [Feature 3]: [Description] - [Priority: High/Medium/Low]
+  - Network visualization (D3.js) - Priority: High
+  - Manuscript reading view - Priority: High
+  - Config management UI - Priority: Medium
+  - Ghost link resolution - Priority: Medium
+  - Full export with Pandoc support - Priority: High
+
+#### Phase 4: Polish (1-2 weeks)
+- **Timeline:** Jan 23 - Feb 6
+- **Theme:** Production readiness
+- **Features:**
+  - Error handling and validation - Priority: High
+  - Loading states and optimistic updates - Priority: High
+  - Keyboard shortcuts - Priority: Medium
+  - Responsive design - Priority: Medium
+
+#### Phase 5: Deployment (1 week)
+- **Timeline:** Feb 6 - Feb 13
+- **Theme:** Containerization and documentation
+- **Features:**
+  - Docker multi-stage build - Priority: High
+  - Volume mount configuration - Priority: High
+  - Environment variables - Priority: High
+  - Startup scripts - Priority: High
+  - User documentation and README - Priority: High
 
 ### Release Strategy
 
-[Describe the overall release strategy, including frequency, versioning approach, and deployment considerations]
+**Version 1.0:** Full feature set from phases 1-5, production-ready Docker container
+
+**Approach:**
+- No intermediate releases during development
+- Alpha testing with Docker container after Phase 3
+- Beta testing after Phase 4
+- v1.0 release after Phase 5 completion
+- Semantic versioning (v1.x.x for features, v1.0.x for patches)
 
 ### Resource Allocation
 
-[Overview of how resources will be allocated across the roadmap]
+**Single developer (AI agent)** implementing full stack:
+- 40% Backend (database, API, event sourcing)
+- 40% Frontend (React, components, state management)
+- 10% Infrastructure (Docker, deployment)
+- 10% Documentation and polish
 
 ### Risk Assessment
 
 | Risk | Impact | Likelihood | Mitigation Strategy |
 |------|--------|------------|---------------------|
-| [Risk 1] | [High/Medium/Low] | [High/Medium/Low] | [Strategy] |
-| [Risk 2] | [High/Medium/Low] | [High/Medium/Low] | [Strategy] |
-| [Risk 3] | [High/Medium/Low] | [High/Medium/Low] | [Strategy] |
+| Event sourcing complexity | High | Medium | Start simple, use clear examples, test replay early |
+| Wiki link resolution ambiguity | Medium | High | Provide disambiguation UI, support type prefixes |
+| Markdown editor integration issues | High | Medium | Choose battle-tested library (Milkdown), plan for alternatives |
+| Network visualization performance | Medium | Low | Limit graph depth to 5, use webworkers for layout |
+| Docker build complexity | Medium | Low | Follow standard Node.js patterns, multi-stage builds |
+| Export format incompatibility | Medium | Low | Follow Pandoc conventions strictly, include sample exports |
 
 ### Roadmap Review Process
 
-[Describe how and when the roadmap will be reviewed and updated]
+**Weekly reviews** during development to assess:
+- Progress against timeline
+- Technical blockers or risks
+- Scope adjustments if needed
+
+**Phase completion gates:**
+- All high-priority features functional
+- Core use cases tested manually
+- No critical bugs
+- Documentation updated
 
 ## Relationships
 - **Parent Nodes:** [foundation/project_definition.md]
@@ -123,9 +183,10 @@ gantt
 - **Update Patterns:** This document should be updated quarterly or when significant changes to the plan occur
 
 ## Metadata
-- **Created:** [Date]
-- **Last Updated:** [Date]
-- **Updated By:** [Role/Agent]
+- **Created:** 2025-11-14
+- **Last Updated:** 2025-11-14
+- **Updated By:** AI Agent (Claude)
 
 ## Change History
-- [Date]: Initial creation of roadmap template
+- 2025-11-14: Initial creation of roadmap template
+- 2025-11-14: Populated with Bartleby 5-phase development roadmap

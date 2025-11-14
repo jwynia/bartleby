@@ -13,104 +13,131 @@ This document outlines the core principles and standards that guide decision-mak
 
 ### Core Values
 
-[List and describe the fundamental values that drive the project]
+1. **Link-centric Design**
+   Relationships between content are first-class citizens. The tool is built around the premise that connections between elements (characters, scenes, locations) are as important as the elements themselves.
 
-1. **[Value 1]**
-   [Description of Value 1]
+2. **Flexibility Over Convention**
+   No rigid hierarchy or fixed card types. Authors define their own organization, card types, and relationships to match their creative process.
 
-2. **[Value 2]**
-   [Description of Value 2]
+3. **Transparency and Auditability**
+   Complete history of all changes via event sourcing. Authors can see what changed, when, and understand the evolution of their work.
 
-3. **[Value 3]**
-   [Description of Value 3]
+4. **Export-First Thinking**
+   The tool facilitates writing but doesn't lock content in. Standard markdown output ensures authors own their work and can use any publishing pipeline.
 
 ### Design Principles
 
-[List and describe the key principles that guide design decisions]
+1. **API-First Architecture**
+   All functionality is accessible via API. The frontend is one consumer among potential many (future CLI tools, agents, scripts).
 
-1. **[Design Principle 1]**
-   [Description of Design Principle 1]
-   
-   *Example:* [Concrete example of this principle in action]
+   *Example:* Creating a card via UI makes the same API call that a future AI agent would use.
 
-2. **[Design Principle 2]**
-   [Description of Design Principle 2]
-   
-   *Example:* [Concrete example of this principle in action]
+2. **Event Sourcing as Source of Truth**
+   Current state is derived from immutable events. All changes are recorded as events, enabling complete audit trails and potential undo/replay.
 
-3. **[Design Principle 3]**
-   [Description of Design Principle 3]
-   
-   *Example:* [Concrete example of this principle in action]
+   *Example:* The `cards` table is a materialized view. Deleting it and replaying events recreates the exact same state.
+
+3. **Bidirectional Relationships**
+   All links are navigable from both sides. Even if created from A→B, both cards can traverse the connection.
+
+   *Example:* A wiki link `[[John]]` in Chapter 1 creates a link visible from both Chapter 1 and the John character card.
+
+4. **Self-Contained Deployments**
+   Each book project is a separate Docker container with its own data. No shared state, no cross-project dependencies.
+
+   *Example:* "Novel A" runs on port 3001, "Novel B" on port 3002, each with independent databases.
+
+5. **Progressive Disclosure**
+   Start simple (tree view + editor), add complexity as needed (network view, advanced filters).
+
+   *Example:* Basic writing doesn't require understanding link types, but power users can define custom link types for nuanced relationships.
 
 ### Standards and Guidelines
 
-[List and describe the standards and guidelines that the project adheres to]
-
 #### Quality Standards
 
-- [Standard 1]
-- [Standard 2]
-- [Standard 3]
+- **TypeScript throughout**: All code (frontend and backend) uses TypeScript for type safety
+- **Single source of truth**: Event log is authoritative; materialized views are derived
+- **Immutable events**: Once written to event log, events are never modified or deleted
+- **API responses include events**: Mutations return both the updated entity and the event that caused it
 
 #### Structural Standards
 
-- [Standard 1]
-- [Standard 2]
-- [Standard 3]
+- **Small, focused files**: Individual components/modules under 300 lines where possible
+- **Atomic commits**: Each git commit represents a coherent, testable change
+- **RESTful conventions**: Standard HTTP methods (GET, POST, PATCH, DELETE) with resource-based URLs
+- **Markdown as content format**: All user content stored and exported as markdown
 
 #### Safety and Security Standards
 
-- [Standard 1]
-- [Standard 2]
-- [Standard 3]
+- **Local-only in v1**: No authentication needed (single-user, localhost deployment)
+- **Input validation**: All API inputs validated before processing
+- **SQL injection prevention**: Use parameterized queries exclusively
+- **XSS prevention**: Sanitize markdown rendering output
 
 #### Performance and Efficiency Standards
 
-- [Standard 1]
-- [Standard 2]
-- [Standard 3]
+- **Optimistic updates**: Frontend updates UI immediately, reconciles with server response
+- **Debounced saves**: Auto-save after 500ms of inactivity
+- **Indexed queries**: Database indexes on foreign keys and frequently queried fields
+- **Lazy loading**: Card content loaded on-demand, not in list views
 
 ### Process Principles
 
-[List and describe the principles that guide development and operational processes]
+1. **Iterative Development**
+   Build incrementally: database → API → UI. Each layer fully functional before the next.
 
-1. **[Process Principle 1]**
-   [Description of Process Principle 1]
+2. **Test Critical Paths**
+   Focus testing on event sourcing, link resolution, and export generation (high-risk areas).
 
-2. **[Process Principle 2]**
-   [Description of Process Principle 2]
-
-3. **[Process Principle 3]**
-   [Description of Process Principle 3]
+3. **Documentation as Code**
+   TypeScript interfaces serve as primary documentation. Comments explain "why" not "what".
 
 ### Decision-Making Framework
 
-[Describe the framework used for making decisions in the project]
-
 #### Decision Criteria
 
-- [Criterion 1]
-- [Criterion 2]
-- [Criterion 3]
+1. **Does it support the core use case?** (Author writing and organizing a book)
+2. **Does it enable future extension?** (API-first, event-sourced design)
+3. **Is it simple enough for v1?** (Defer complexity where possible)
+4. **Does it maintain data integrity?** (Event sourcing, validation)
 
 #### Trade-off Considerations
 
-- [Trade-off 1]
-- [Trade-off 2]
-- [Trade-off 3]
+- **Performance vs. Auditability**: Accept event sourcing overhead for complete history
+- **Flexibility vs. Guidance**: Minimal constraints on structure, but provide sensible defaults
+- **Feature richness vs. Simplicity**: Defer advanced features (collaboration, sync) to focus on core workflow
+- **Local-first vs. Cloud-ready**: Design for local deployment, but keep cloud migration possible
 
 ### Principle Application
 
-[Describe how these principles should be applied in practice]
+When implementing features, always ask:
+1. Is this exposed via API? (API-first)
+2. Is this recorded as an event? (Event sourcing)
+3. Can users customize this? (Flexibility)
+4. Can this be exported to markdown? (Export-first)
 
 #### When Principles Conflict
 
-[Guidance on how to resolve situations where principles may conflict with each other]
+If API-first adds complexity that blocks v1 delivery:
+- Build the feature working end-to-end first
+- Refactor to API-first before considering it complete
+- Never ship a feature that bypasses the API
+
+If flexibility creates confusion:
+- Provide strong defaults
+- Make customization opt-in
+- Document the "happy path" clearly
 
 #### Exceptions to Principles
 
-[Circumstances under which exceptions to these principles may be considered]
+Event sourcing overhead may be waived for:
+- Non-functional state (UI preferences, window positions)
+- Truly ephemeral data (search query, current scroll position)
+
+Export-first may not apply to:
+- Computed metadata (link counts, word counts)
+- UI configuration
 
 ## Relationships
 - **Parent Nodes:** [foundation/project_definition.md]
@@ -127,9 +154,10 @@ This document outlines the core principles and standards that guide decision-mak
 - **Update Patterns:** This document should be updated rarely, only when fundamental principles change
 
 ## Metadata
-- **Created:** [Date]
-- **Last Updated:** [Date]
-- **Updated By:** [Role/Agent]
+- **Created:** 2025-11-14
+- **Last Updated:** 2025-11-14
+- **Updated By:** AI Agent (Claude)
 
 ## Change History
-- [Date]: Initial creation of principles template
+- 2025-11-14: Initial creation of principles template
+- 2025-11-14: Populated with Bartleby architectural principles and design standards

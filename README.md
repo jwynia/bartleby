@@ -1,44 +1,205 @@
-# Bare Context Network
-This project is a starter template for a generic context-network (more info at https://jwynia.github.io/context-networks/). It can be used as a collaboration context manager for a wide range of projects. They are used for software projects, writing projects of all kinds (fiction, non-fiction, marketing, technical, etc.), building knowledge bases, managing research and analysis and more.
+# Bartleby - Writing Tool
 
-This particular template repository is generic so that it isn't aimed at any one of those project types. Other templates exist (or will soon) that are aimed at common project types. Look at those and use one if it seems like a good match. But, if not, use this one.
+A web-based tool for writing fiction and non-fiction books with Scrivener-like functionality featuring nested notecards, flexible linking, and network visualization.
 
-## Getting Started
-Context networks are intended to be used with an LLM agent that has file access to all of the files in the project folder. For people in software development professions, that can be agents they write. But, for most people, the easiest access to such agents is via IDE coding tools.
+## Features
 
-Set up the prompts (see below) and start a planning conversation and describe your project, your goals, your constraints, etc. When the plan looks good, let it enhance the context network. Then start with real tasks for the project.
+- **Nested Notecard System**: Organize chapters, scenes, characters, locations, and notes in a hierarchical structure
+- **Wiki-Style Linking**: Use `[[Card Title]]` syntax to create bidirectional links between cards
+- **Network Visualization**: See how your characters, locations, and plot points connect
+- **Event Sourcing**: Complete audit trail of all changes for undo/replay
+- **Markdown Export**: Export to Pandoc-compatible markdown for publishing workflows
+- **Self-Contained**: Each book runs in its own Docker container with isolated data
 
-## Cost
-Because context networks are a relatively cutting-edge approach to collaboration with LLM AI agents, these tools do cost money and some of the best of them can cost more money than you may be expecting. The costs on such things are dropping and much of what we're doing with context networks is figuring out the ways to work that will be more widespread next year and beyond, when these costs drop. If these tools are too expensive for your budget, that probably means you need to wait a bit.
+## Quick Start
 
-## Tools
-Cursor (https://www.cursor.com/) is an all-in-one that comes with LLM chat and an agent that can act on the files.
+### Using Docker Compose (Recommended)
 
-Cursor is built on VSCode (https://code.visualstudio.com/), which is a more generic code/text editor that can have plugins added. One we use a lot with context networks is Cline (https://cline.bot/). Cline's agent can be pointed at a wide range of LLM APIs that you use your own keys/billing for or their own management of that. A popular solution is to use OpenRouter (https://openrouter.ai/) which lets you use most of the LLM models available today.
+```bash
+# Build and start
+docker-compose up -d
 
-## Patterns
-### Prompts
-For whatever agent you use, you need to include instructions in the system prompt or custom instructions that tell it about context networks and how to navigate them. The prompt in /inbox/custom-instructions-prompt.md is the one a lot of people are using for Cline with Claude Sonnet as the model.
+# Access at http://localhost:3000
+```
 
-Add it in either your agent's configuration screen or via it's file-based prompt management system.
+### Using Docker
 
-### Plan/Act and Specific Scope
-Cline and many other agents have multiple modes, usually offering one that lets you have a conversation with it separate from it taking action on files. In Cline, that's "Plan". In that mode, it won't make any changes to your files.
+```bash
+# Build image
+docker build -t bartleby .
 
-Use that mode aggressively to get to a specific plan for what will happen when you toggle to act. That plan should have a clear definition of what "done" will look like, should be as close to a single action as possible.
+# Run container
+docker run -d \
+  --name my-novel \
+  -p 3000:3000 \
+  -v ./data:/app/data \
+  bartleby
 
-That often means that the action is to detail out a list of tasks that you'll actually have the agent do separately, one at a time. The "do one thing" can mean break the existing scope down another level to get to a more detailed plan. 
+# Access at http://localhost:3000
+```
 
-Basically, the more specific the action that Act mode or its equivalent is given, the better job it will do at managing token budget, at not volunteering to do a bunch of extra things,  and the more likely it does something you've already had a chance to approve.
+### Development Mode
 
-### Monitor and Interrupt
-The more you actually read and monitor what your agent is doing for anything that you disagree with or sounds incorrect and step in to interrupt, the better your context network will mature. Like hiring a new assistant, where for the first few weeks, you have to tell them your preferences and ways you want things done, it pays off over the long haul.
+```bash
+# Install dependencies
+npm run install:all
 
-Interrupt, flip to Plan mode, and ask things like:
+# Start backend (terminal 1)
+npm run dev:backend
 
-* How can we document into the context network a way of working so we don't repeat (the problem/misunderstanding above)?
-* I'd really prefer we always write out a plan with tasks before doing things ad hoc. How can we clarify what's in the context network to make that our process going forward?
+# Start frontend (terminal 2)
+npm run dev:frontend
 
+# Backend: http://localhost:3000
+# Frontend: http://localhost:5173
+```
 
-### Retrospective
-At the end of tasks and periodically AS a new task, ask how things could be improved. For task end, "What from this conversation and task should be documented in the context network?" For periodic retrospectives, "What have we learned in this project that could be used to improve the context network for our efforts going forward?"
+## Project Structure
+
+```
+bartleby/
+├── backend/           # Hono API server with event sourcing
+│   ├── src/
+│   │   ├── api/      # API route handlers
+│   │   ├── db/       # Database and event store
+│   │   ├── services/ # Business logic (cards, links, wikilinks)
+│   │   └── types/    # TypeScript types
+│   └── package.json
+├── frontend/          # React SPA with TanStack Router/Query
+│   ├── src/
+│   │   ├── routes/   # TanStack Router routes
+│   │   ├── lib/      # API client and types
+│   │   └── components/ # React components
+│   └── package.json
+├── context-network/   # Project documentation and planning
+├── Dockerfile         # Multi-stage build
+└── docker-compose.yml # Docker Compose configuration
+```
+
+## Architecture
+
+- **Backend**: Node.js + Hono + SQLite (event sourcing)
+- **Frontend**: React + Vite + TanStack Router/Query
+- **Database**: SQLite with event log + materialized views
+- **Deployment**: Docker container per book project
+
+## Core Concepts
+
+### Cards
+
+Cards represent any content unit: chapters, scenes, characters, locations, or notes. Each card has:
+- Title and markdown content
+- User-defined type (chapter, character, etc.)
+- Arbitrary metadata
+- Position in hierarchy
+
+### Links
+
+Bidirectional connections between cards created via:
+- Wiki syntax: `[[Character Name]]` in markdown
+- Explicit UI actions: "Add link" button
+- Hierarchical relationships: Parent-child in tree
+
+### Event Sourcing
+
+All changes recorded as immutable events:
+- Complete audit trail
+- Replay capability for undo/redo
+- Foundation for future collaboration features
+
+### Wiki Links
+
+Use wiki-style syntax to link cards:
+
+```markdown
+[[Character Name]]           # Link to any card by title
+[[Character:John Smith]]     # Link to specific type
+[[#uuid]]                    # Direct link by ID
+```
+
+Links are:
+- **Bidirectional**: Visible from both cards
+- **Auto-created**: Typing `[[...]]` creates links
+- **Smart**: Autocomplete suggests existing cards
+- **Forgiving**: Unresolved links become "ghost links" that can create cards on-click
+
+## API
+
+Full REST API at `/api`:
+
+- `GET /api/cards` - List cards with filters
+- `POST /api/cards` - Create card
+- `PATCH /api/cards/:id` - Update card (processes wiki links)
+- `DELETE /api/cards/:id` - Delete card
+- `GET /api/cards/:id/network` - Get connection network
+- `GET /api/links` - List links
+- `POST /api/links` - Create link
+- `GET /api/config` - Get project configuration
+- `GET /api/events` - Query event log
+
+## Export
+
+Export your manuscript to markdown:
+
+```bash
+# Via API
+POST /api/export/manuscript
+{
+  "format": "pandoc",
+  "includeMetadata": true
+}
+
+# Processes to Pandoc-compatible markdown:
+/export-timestamp/
+  /chapters/*.md
+  /metadata/**/*.md
+  metadata.yaml
+  compile-order.txt
+```
+
+Use with Pandoc:
+
+```bash
+pandoc -o book.pdf \
+  --metadata-file=metadata.yaml \
+  $(cat compile-order.txt)
+```
+
+## Development Roadmap
+
+See `context-network/planning/roadmap.md` for detailed development plan.
+
+**Current Phase**: Phase 1 - Core Backend & Frontend ✅
+
+**Completed**:
+- Event-sourced database with SQLite
+- REST API for cards, links, config, events
+- Wiki link parser and automatic link creation
+- React frontend with TanStack Router/Query
+- Basic card CRUD interface
+- Docker deployment
+
+**Next**:
+- Card editor with Milkdown
+- Tree view with drag-and-drop
+- Network visualization with D3.js
+- Manuscript export
+
+## Documentation
+
+Full project documentation in `context-network/`:
+
+- `foundation/project_definition.md` - Project overview and scope
+- `foundation/principles.md` - Architectural principles
+- `foundation/structure.md` - System architecture
+- `elements/` - Component-specific documentation
+- `decisions/` - Architectural decision records
+- `planning/roadmap.md` - Development roadmap
+
+## License
+
+MIT
+
+## Context Network
+
+This project uses a context network for planning and documentation. See `context-network/discovery.md` for navigation guide.
