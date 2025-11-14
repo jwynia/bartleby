@@ -7,6 +7,7 @@ import { buildTree } from '../../lib/treeUtils';
 import type { TreeNode } from '../../lib/treeUtils';
 import type { CreateCardInput } from '../../lib/types';
 import { TreeNodeComponent } from './TreeNode';
+import { LoadingSkeleton } from '../LoadingSkeleton/LoadingSkeleton';
 import './TreeView.css';
 
 export function TreeView() {
@@ -127,7 +128,7 @@ export function TreeView() {
           <h2>Cards</h2>
         </div>
         <div className="tree-content">
-          <p className="placeholder-text">Loading cards...</p>
+          <LoadingSkeleton variant="tree" />
         </div>
       </div>
     );

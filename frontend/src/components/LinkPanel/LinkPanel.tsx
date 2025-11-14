@@ -2,6 +2,7 @@ import { useNavigate } from '@tanstack/react-router';
 import { useTreeStore } from '../../stores/treeStore';
 import { useCards } from '../../hooks/useCards';
 import { useLinks } from '../../hooks/useLinks';
+import { LoadingSkeleton } from '../LoadingSkeleton/LoadingSkeleton';
 import './LinkPanel.css';
 
 export function LinkPanel() {
@@ -48,7 +49,7 @@ export function LinkPanel() {
           <h2>Links</h2>
         </div>
         <div className="link-content">
-          <p className="placeholder-text">Loading links...</p>
+          <LoadingSkeleton variant="links" />
         </div>
       </div>
     );

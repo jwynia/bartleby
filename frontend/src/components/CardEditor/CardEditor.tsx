@@ -8,6 +8,7 @@ import { useCard, useUpdateCard } from '../../hooks/useCards';
 import { useAutosave } from '../../hooks/useAutosave';
 import { SaveIndicator, type SaveStatus } from './SaveIndicator';
 import { CardHeader } from './CardHeader';
+import { LoadingSkeleton } from '../LoadingSkeleton/LoadingSkeleton';
 import './CardEditor.css';
 import './CardHeader.css';
 
@@ -120,9 +121,7 @@ function EditorComponent() {
   if (isLoading) {
     return (
       <div className="card-editor">
-        <div className="editor-empty-state">
-          <p>Loading card...</p>
-        </div>
+        <LoadingSkeleton variant="editor" />
       </div>
     );
   }
