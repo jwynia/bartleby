@@ -1,0 +1,153 @@
+.tree-view {
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+}
+
+.tree-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding-bottom: 1rem;
+  border-bottom: 1px solid #e2e8f0;
+  margin-bottom: 1rem;
+}
+
+.tree-header h2 {
+  margin: 0;
+  font-size: 1.25rem;
+  font-weight: 600;
+  color: #1e293b;
+}
+
+.tree-action {
+  width: 32px;
+  height: 32px;
+  border-radius: 6px;
+  border: 1px solid #cbd5e1;
+  background: #ffffff;
+  color: #475569;
+  font-size: 1.25rem;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.15s ease;
+}
+
+.tree-action:hover {
+  background: #f1f5f9;
+  border-color: #94a3b8;
+}
+
+.tree-content {
+  flex: 1;
+  overflow: hidden;
+  position: relative;
+}
+
+/* Create Modal */
+.create-modal {
+  background: white;
+  border: 1px solid #e2e8f0;
+  border-radius: 8px;
+  padding: 1rem;
+  margin-bottom: 1rem;
+  box-shadow: 0 1px 3px 0 rgb(0 0 0 / 0.1);
+}
+
+.create-modal h3 {
+  margin: 0 0 0.75rem 0;
+  font-size: 1rem;
+  font-weight: 600;
+  color: #1e293b;
+}
+
+.modal-input,
+.modal-select {
+  width: 100%;
+  padding: 0.5rem;
+  border: 1px solid #cbd5e1;
+  border-radius: 6px;
+  font-size: 0.875rem;
+  margin-bottom: 0.75rem;
+  transition: border-color 0.15s ease;
+}
+
+.modal-input:focus,
+.modal-select:focus {
+  outline: none;
+  border-color: #3b82f6;
+  box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.1);
+}
+
+.modal-actions {
+  display: flex;
+  gap: 0.5rem;
+}
+
+.modal-button {
+  flex: 1;
+  padding: 0.5rem;
+  border: 1px solid #cbd5e1;
+  border-radius: 6px;
+  font-size: 0.875rem;
+  cursor: pointer;
+  transition: all 0.15s ease;
+  background: white;
+  color: #1e293b;
+}
+
+.modal-button:hover {
+  background: #f1f5f9;
+}
+
+.modal-button.primary {
+  background: #3b82f6;
+  color: white;
+  border-color: #3b82f6;
+}
+
+.modal-button.primary:hover {
+  background: #2563eb;
+}
+
+.modal-button:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+/* Empty State */
+.empty-state {
+  text-align: center;
+  padding: 3rem 1rem;
+  color: #64748b;
+}
+
+.empty-state p {
+  margin: 0 0 0.5rem 0;
+  font-size: 0.875rem;
+}
+
+.placeholder-text {
+  color: #64748b;
+  font-size: 0.875rem;
+  margin: 2rem 0 0.5rem;
+  text-align: center;
+}
+
+.hint-text {
+  color: #94a3b8;
+  font-size: 0.75rem;
+  text-align: center;
+  margin: 0;
+}
+
+.error-text {
+  color: #dc2626;
+  font-size: 0.875rem;
+  text-align: center;
+  padding: 1rem;
+  background: #fee2e2;
+  border-radius: 6px;
+}
